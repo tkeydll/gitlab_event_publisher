@@ -11,7 +11,8 @@ using gitlab_event_publisher.Gitlab;
 namespace gitlab_event_publisher
 {
     class Program
-    {        private const string _gitlab_host = "https://<gitlab_host>";
+    {
+        private const string _gitlab_host = "https://<gitlab_host>";
         private const string _token = "<gitlab_private_token>";
         private const string _api_ver = "v4";
         private const string _project_id = "<project_id>";
@@ -24,7 +25,9 @@ namespace gitlab_event_publisher
         {
             Console.WriteLine("Publish start ...");
 
-            PublishGitLabEvent().Wait();
+            //PublishGitLabEvent().Wait();
+            var users = GetAllUser().Result;
+            users.ForEach(u => PublishUserEvent(u.id, u.username).Wait());
 
             Console.WriteLine("Done.");
         }
